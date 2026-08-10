@@ -16,4 +16,4 @@
 
 ## 编码规范（必读）
 
-进行任何编码工作（coding work）前，**必须先阅读** [`karpathy_coding_rule.md`](./karpathy_coding_rule.md) 并遵循其中的行为准则（先思考再编码、保持简单、外科手术式改动、目标驱动验证）。
+进行任何编码工作（coding work）前，**必须先阅读** [`karpathy_code_rule.md`](./karpathy_code_rule.md) 并遵循其中的行为准则（先思考再编码、保持简单、外科手术式改动、目标驱动验证）。
