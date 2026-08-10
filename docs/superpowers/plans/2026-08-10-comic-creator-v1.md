@@ -19,8 +19,8 @@
 - **版式**：`2x2`(4) / `1-2-1`(4) / `1-2-2`(5) / `2-1-2`(5) / `2x3`(6) / `3x2`(6)
 - **规模**：一书 4–5 章；一章 4–5 页；一页 4–6 格
 - **台词**：单个气泡 ≤ 12 个单词
-- **依赖恰好四个**：`tsx`、`vitest`、`typescript`（开发），`zod`（运行时）。不得引入其他依赖。
-  `typescript` 必需 —— `tsx` 只运行 TS 不做类型检查；`package.json` 必须有 `"typecheck": "tsc --noEmit"`，且它是提交前验证步骤之一
+- **依赖恰好五个**：`tsx`、`vitest`、`typescript`、`@types/node`（开发），`zod`（运行时）。不得引入其他依赖。
+  三条都是工具链必需品，不是可选的：`tsx` 只运行 TS 不做类型检查，所以要 `typescript`；`tsc` 不认识 `node:fs`/`process`，所以要 `@types/node`（`tsconfig.json` 需 `"types": ["node"]`）。`package.json` 必须有 `"typecheck": "tsc --noEmit"`，且它是提交前验证步骤之一
 - **`index.html` 绝对不能用 `fetch()` 读本地文件** —— `file://` 下会被 CORS 拦截。所有数据必须内联
 - **所有 import 写 `.js` 后缀**（`import { x } from "./layout.js"`），兼容 ESM 解析
 - 规范细节见 [`comic.md`](../../../comic.md)，设计依据见 [`../specs/2026-08-10-kids-comic-creator-design.md`](../specs/2026-08-10-kids-comic-creator-design.md)
