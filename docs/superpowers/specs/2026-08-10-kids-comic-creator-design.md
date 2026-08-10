@@ -69,7 +69,9 @@
 | Schema | **Zod** | Claude 生成的 JSON 必须在入口校验 |
 | 阅读器输出 | 静态 HTML + CSS Grid + 约 20 行原生 JS | 单文件、`file://` 可开、可直接分享 |
 
-依赖三个：`tsx`、`vitest`（开发）、`zod`（运行时）。
+依赖四个：`tsx`、`vitest`、`typescript`（开发），`zod`（运行时）。
+
+`typescript` 不是可选的：`tsx` 只负责**运行** TS，不做类型检查；`tsc --noEmit` 才是真正的类型验证，而选 TypeScript 的全部理由就是类型安全。因此 `package.json` 必须提供 `"typecheck": "tsc --noEmit"` 脚本，并把它当作提交前的验证步骤之一。
 
 **核心分层：**
 
