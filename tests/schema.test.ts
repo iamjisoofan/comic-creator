@@ -114,7 +114,10 @@ describe("ScriptSchema", () => {
   it("格数与版式不符时拒绝", () => {
     const bad = {
       ...script,
-      chapters: [{ ...chapter, pages: [{ ...page, layout: "2x3" }, page, page, page] }],
+      chapters: [
+        { ...chapter, pages: [{ ...page, layout: "2x3" }, page, page, page] },
+        chapter, chapter, chapter,
+      ],
     };
     const r = ScriptSchema.safeParse(bad);
     expect(r.success).toBe(false);
@@ -127,18 +130,25 @@ describe("ScriptSchema", () => {
     const longLine = Array.from({ length: 13 }, () => "WORD").join(" ");
     const bad = {
       ...script,
-      chapters: [{
-        ...chapter,
-        pages: [{
-          ...page,
-          panels: [
-            { ...panel("a"), dialogue: [{ speaker: "dog-man", text: longLine }] },
-            panel("b"), panel("c"), panel("d"),
-          ],
-        }, page, page, page],
-      }],
+      chapters: [
+        {
+          ...chapter,
+          pages: [{
+            ...page,
+            panels: [
+              { ...panel("a"), dialogue: [{ speaker: "dog-man", text: longLine }] },
+              panel("b"), panel("c"), panel("d"),
+            ],
+          }, page, page, page],
+        },
+        chapter, chapter, chapter,
+      ],
     };
-    expect(ScriptSchema.safeParse(bad).success).toBe(false);
+    const r = ScriptSchema.safeParse(bad);
+    expect(r.success).toBe(false);
+    if (!r.success) {
+      expect(r.error.issues.some((i) => i.path.includes("dialogue"))).toBe(true);
+    }
   });
 
   it("章数少于 4 被拒绝", () => {
