@@ -8,6 +8,7 @@
   },
   "scripts": {
     "test": "vitest run",
+    "typecheck": "tsc --noEmit",
     "check": "tsx src/cli.ts check",
     "build": "tsx src/cli.ts build"
   },
@@ -23,7 +24,7 @@
     "url": "https://github.com/iamjisoofan/comic-creator/issues"
   },
   "homepage": "https://github.com/iamjisoofan/comic-creator#readme",
-  "private": "true",
+  "private": true,
   "dependencies": {
     "zod": "^4.4.3"
   },
