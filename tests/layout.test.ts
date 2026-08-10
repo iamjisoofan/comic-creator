@@ -11,9 +11,27 @@ describe("layout", () => {
     expect(panelCount("3x2")).toBe(6);
   });
 
-  it("areas 数量等于格数", () => {
+  // 原来这里断言 areas.length === panelCount()，而 panelCount() 就是 areas.length —— 恒真。
+  // 真正该守的不变量是：这些 grid-area 正好铺满 columns × rows，不越界、不重叠、不漏格。
+  it("每种版式的 areas 正好铺满 columns × rows，无重叠无空缺", () => {
     for (const name of Object.keys(LAYOUT_SPECS) as LayoutName[]) {
-      expect(LAYOUT_SPECS[name].areas.length).toBe(panelCount(name));
+      const { columns, rows, areas } = LAYOUT_SPECS[name];
+      const covered = new Set<string>();
+      for (const area of areas) {
+        const [r1, c1, r2, c2] = area.split("/").map((n) => Number(n.trim()));
+        expect([r1, c1, r2, c2].every(Number.isInteger), `${name} 的 area "${area}"`).toBe(true);
+        expect(r1! >= 1 && r2! <= rows + 1, `${name} 的行越界：${area}`).toBe(true);
+        expect(c1! >= 1 && c2! <= columns + 1, `${name} 的列越界：${area}`).toBe(true);
+        for (let r = r1!; r < r2!; r++) {
+          for (let c = c1!; c < c2!; c++) {
+            const key = `${r},${c}`;
+            expect(covered.has(key), `${name} 的格子 ${key} 被两格占用`).toBe(false);
+            covered.add(key);
+          }
+        }
+      }
+      expect(covered.size, `${name} 有空格子`).toBe(columns * rows);
+      expect(areas.length).toBe(panelCount(name));
     }
   });
 

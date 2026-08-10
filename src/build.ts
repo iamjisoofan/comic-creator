@@ -1,12 +1,7 @@
 import { renderPanelSvg } from "./render.js";
 import { LAYOUT_SPECS } from "./layout.js";
-import type { Script, Panel, Character } from "./schema.js";
-
-export interface BookData {
-  script: Script;
-  panels: Map<string, Panel>;
-  characters: Map<string, Character>;
-}
+import { PANEL_WIDTH } from "./palette.js";
+import type { Panel, Character, BookData } from "./schema.js";
 
 function esc(s: string): string {
   return s
@@ -25,7 +20,10 @@ function tilt(text: string): number {
 }
 
 const CSS = `
-:root { --gap: 12px; }
+/* --row：每一格的高度。所有版式共用同一个行高，所以一页就是一页：
+   3 行的版式约 710px，2 行的约 480px，都能整页塞进笔记本屏幕（1280×800 也够），翻页才有意义。
+   通栏格只是格子更宽，不会变成两倍高——画面按 4:3 居中放进格子里。 */
+:root { --gap: 12px; --row: 220px; }
 * { box-sizing: border-box; }
 body { margin: 0; background: #333; font-family: "Comic Sans MS", "Chalkboard SE", sans-serif; }
 .book { max-width: 900px; margin: 0 auto; padding: 24px; }
@@ -35,21 +33,27 @@ h2 { color: #F5C518; margin: 32px 0 8px; }
         border-radius: 8px; margin-bottom: 24px; }
 .panel { position: relative; border: 6px solid #000; border-radius: 4px;
          overflow: hidden; background: #fff; }
-.panel svg { display: block; width: 100%; height: auto; }
+.panel svg { display: block; width: 100%; height: 100%; }
 .not-drawn { display: flex; align-items: center; justify-content: center;
-             min-height: 160px; color: #999; font-size: 14px; }
-.bubble { position: absolute; top: 8px; left: 8px; max-width: 60%;
+             height: 100%; color: #999; font-size: 14px; }
+.bubble { position: absolute; max-width: 60%;
           background: #fff; border: 4px solid #000; border-radius: 14px;
           padding: 6px 10px; font-weight: bold; font-size: 15px; line-height: 1.2; }
-/* 向下的三角尾巴，指向说话的角色 */
-.bubble::after { content: ""; position: absolute; bottom: -14px; left: 18px;
-                 border: 7px solid transparent; border-top-color: #000; }
-.bubble + .bubble { top: auto; bottom: 8px; }
+/* 气泡贴在说话角色所在的一侧，尾巴也在那一侧，指向格子中间的角色 */
+.bubble.left { left: 8px; }
+.bubble.right { right: 8px; }
+.bubble.top { top: 8px; }
+.bubble.bottom { bottom: 8px; }
+.captioned .bubble.top { top: 44px; }
+.bubble::after { content: ""; position: absolute; border: 7px solid transparent; }
+.bubble.top::after { bottom: -14px; border-top-color: #000; }
+.bubble.bottom::after { top: -14px; border-bottom-color: #000; }
+.bubble.left::after { left: 18px; }
+.bubble.right::after { right: 18px; }
 .sfx { position: absolute; top: 10px; right: 10px; font-size: 30px; font-weight: 900;
        color: #F5C518; -webkit-text-stroke: 3px #000; }
 .caption { position: absolute; top: 8px; left: 8px; background: #fff;
            border: 4px solid #000; padding: 4px 8px; font-size: 13px; font-weight: bold; }
-.caption ~ .bubble { top: auto; bottom: 8px; }
 `.trim();
 
 const JS = `
@@ -64,6 +68,23 @@ addEventListener('keydown', (e) => {
   if (e.key === 'ArrowLeft') go(i - 1);
 });
 `.trim();
+
+/**
+ * 气泡该贴哪一侧：按说话人在画面里的横向位置决定。
+ * 说话人不在这一格的 cast 里（旁白式台词、还没画的格）时左右交替，至少两个气泡不会撞在一起。
+ */
+export function bubbleSide(
+  speaker: string,
+  index: number,
+  drawn: Panel | undefined,
+  characters: Map<string, Character>,
+): "left" | "right" {
+  const member = drawn?.cast.find((m) => m.id === speaker);
+  if (!member) return index % 2 === 0 ? "left" : "right";
+  const width = characters.get(member.id)?.viewBox[2] ?? 100;
+  const centre = member.x + (width * member.scale) / 2;
+  return centre < PANEL_WIDTH / 2 ? "left" : "right";
+}
 
 export function buildHtml(book: BookData): string {
   const { script, panels, characters } = book;
@@ -81,26 +102,31 @@ export function buildHtml(book: BookData): string {
         const drawn = panels.get(sp.id);
         const art = drawn
           ? renderPanelSvg(drawn, characters)
-          : `<div class="not-drawn">${esc(sp.id)} 还没画</div>`;
+          : `<div class="not-drawn">${esc(sp.id)} not drawn yet</div>`;
 
         const overlay: string[] = [];
         if (sp.caption) overlay.push(`<div class="caption">${esc(sp.caption)}</div>`);
-        for (const line of sp.dialogue) {
-          overlay.push(`<div class="bubble">${esc(line.text)}</div>`);
-        }
+        sp.dialogue.forEach((line, i) => {
+          // schema 限死最多 2 个气泡：第一个贴上沿，第二个贴下沿
+          const slot = i === 0 ? "top" : "bottom";
+          const side = bubbleSide(line.speaker, i, drawn, characters);
+          overlay.push(`<div class="bubble ${slot} ${side}">${esc(line.text)}</div>`);
+        });
         if (sp.sfx) {
           overlay.push(
             `<div class="sfx" style="transform: rotate(${tilt(sp.sfx)}deg)">${esc(sp.sfx)}</div>`,
           );
         }
 
+        const cls = sp.caption ? "panel captioned" : "panel";
         cells.push(
-          `<div class="panel" style="grid-area: ${area}">${art}${overlay.join("")}</div>`,
+          `<div class="${cls}" style="grid-area: ${area}">${art}${overlay.join("")}</div>`,
         );
       });
 
       parts.push(
-        `<div class="page" style="grid-template-columns: repeat(${spec.columns}, 1fr)">` +
+        `<div class="page" style="grid-template-columns: repeat(${spec.columns}, 1fr);` +
+        ` grid-template-rows: repeat(${spec.rows}, var(--row))">` +
         cells.join("") +
         `</div>`,
       );

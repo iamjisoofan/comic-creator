@@ -151,6 +151,53 @@ describe("ScriptSchema", () => {
     }
   });
 
+  it("第三个气泡被拒绝 —— 一格最多两条台词，第三条渲染时会盖掉第二条", () => {
+    const line = (text: string) => ({ speaker: "dog-man", text });
+    const bad = {
+      ...script,
+      chapters: [
+        {
+          ...chapter,
+          pages: [{
+            ...page,
+            panels: [
+              { ...panel("a"), dialogue: [line("ONE"), line("TWO"), line("THREE")] },
+              panel("b"), panel("c"), panel("d"),
+            ],
+          }, page, page, page],
+        },
+        chapter, chapter, chapter,
+      ],
+    };
+    const r = ScriptSchema.safeParse(bad);
+    expect(r.success).toBe(false);
+    if (!r.success) {
+      const issue = r.error.issues.find((i) => i.path.includes("dialogue"));
+      expect(issue?.message).toMatch(/2 个气泡/);
+    }
+  });
+
+  it("两个气泡仍然合法", () => {
+    const line = (text: string) => ({ speaker: "dog-man", text });
+    const ok = {
+      ...script,
+      chapters: [
+        {
+          ...chapter,
+          pages: [{
+            ...page,
+            panels: [
+              { ...panel("a"), dialogue: [line("ONE"), line("TWO")] },
+              panel("b"), panel("c"), panel("d"),
+            ],
+          }, page, page, page],
+        },
+        chapter, chapter, chapter,
+      ],
+    };
+    expect(ScriptSchema.safeParse(ok).success).toBe(true);
+  });
+
   it("章数少于 4 被拒绝", () => {
     expect(ScriptSchema.safeParse({ ...script, chapters: [chapter] }).success).toBe(false);
   });

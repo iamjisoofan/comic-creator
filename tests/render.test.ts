@@ -77,7 +77,14 @@ describe("renderPanelSvg", () => {
     expect(() => renderPanelSvg(bad, characters)).toThrow(/ghost/);
   });
 
-  it("画面里不出现任何 text 元素", () => {
+  it("画面按 4:3 居中缩放放进格子，不被拉伸", () => {
+    const svg = renderPanelSvg(panel, characters);
+    expect(svg).toContain('preserveAspectRatio="xMidYMid meet"');
+  });
+
+  // 绊线（tripwire）：shape 词表里没有 text 类型，所以今天不可能失败。
+  // 留着是为了在有人给词表加 text 时立刻响 —— 文字必须留在 HTML 层，改台词才不用重画。
+  it("绊线：画面里不出现任何 text 元素", () => {
     const svg = renderPanelSvg(panel, characters);
     expect(svg).not.toContain("<text");
   });

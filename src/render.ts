@@ -58,7 +58,10 @@ export function renderPanelSvg(panel: Panel, characters: Map<string, Character>)
   ]);
 
   return (
-    `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${PANEL_WIDTH} ${PANEL_HEIGHT}" ${strokeAttrs}>` +
+    // preserveAspectRatio：格子比 4:3 宽（通栏格）时画面居中留白，
+    // 而不是被拉伸或者把格子撑成两倍高
+    `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${PANEL_WIDTH} ${PANEL_HEIGHT}" ` +
+    `preserveAspectRatio="xMidYMid meet" ${strokeAttrs}>` +
     body.join("") +
     `</svg>`
   );

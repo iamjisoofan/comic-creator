@@ -70,7 +70,7 @@ export const ScriptPanelSchema = z.object({
   shot: ShotSchema,
   description: z.string().min(1),
   cast: z.array(z.string()),
-  dialogue: z.array(DialogueSchema).default([]),
+  dialogue: z.array(DialogueSchema).max(2, "一格最多 2 个气泡，第三个会画不下").default([]),
   sfx: z.string().optional(),
   caption: z.string().optional(),
 }).strict();
@@ -102,3 +102,11 @@ export const ScriptSchema = z.object({
   chapters: z.array(ScriptChapterSchema).min(4).max(5),
 }).strict();
 export type Script = z.infer<typeof ScriptSchema>;
+
+// ---- 整本书（load 产出，build 消费）----
+
+export interface BookData {
+  script: Script;
+  panels: Map<string, Panel>;
+  characters: Map<string, Character>;
+}
