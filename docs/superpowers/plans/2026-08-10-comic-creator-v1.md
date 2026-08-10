@@ -380,10 +380,16 @@ describe("ScriptSchema", () => {
     expect(r.success).toBe(true);
   });
 
+  // 负向测试的 fixture 必须"只违反被测的那一条规则"。
+  // chapters 一律补满 4 章：否则 chapters.min(4) 会先行拒绝整个对象，
+  // 测试即使在被测规则被删掉的情况下也照样通过 —— 等于没有测试。
   it("格数与版式不符时拒绝", () => {
     const bad = {
       ...script,
-      chapters: [{ ...chapter, pages: [{ ...page, layout: "2x3" }, page, page, page] }],
+      chapters: [
+        { ...chapter, pages: [{ ...page, layout: "2x3" }, page, page, page] },
+        chapter, chapter, chapter,
+      ],
     };
     const r = ScriptSchema.safeParse(bad);
     expect(r.success).toBe(false);
@@ -396,18 +402,27 @@ describe("ScriptSchema", () => {
     const longLine = Array.from({ length: 13 }, () => "WORD").join(" ");
     const bad = {
       ...script,
-      chapters: [{
-        ...chapter,
-        pages: [{
-          ...page,
-          panels: [
-            { ...panel("a"), dialogue: [{ speaker: "dog-man", text: longLine }] },
-            panel("b"), panel("c"), panel("d"),
-          ],
-        }, page, page, page],
-      }],
+      chapters: [
+        {
+          ...chapter,
+          pages: [{
+            ...page,
+            panels: [
+              { ...panel("a"), dialogue: [{ speaker: "dog-man", text: longLine }] },
+              panel("b"), panel("c"), panel("d"),
+            ],
+          }, page, page, page],
+        },
+        chapter, chapter, chapter,
+      ],
     };
-    expect(ScriptSchema.safeParse(bad).success).toBe(false);
+    const r = ScriptSchema.safeParse(bad);
+    expect(r.success).toBe(false);
+    if (!r.success) {
+      // 断言到具体 issue，而不是只看 success —— 后者无法区分
+      // "规则生效"和"规则不存在"
+      expect(r.error.issues.some((i) => i.path.includes("dialogue"))).toBe(true);
+    }
   });
 
   it("章数少于 4 被拒绝", () => {
