@@ -1,0 +1,40 @@
+{
+  "name": "comic-creator",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "directories": {
+    "doc": "docs"
+  },
+  "scripts": {
+    "test": "vitest run",
+    "typecheck": "tsc --noEmit",
+    "check": "tsx src/cli.ts check",
+    "build": "tsx src/cli.ts build"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/iamjisoofan/comic-creator.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "module",
+  "engines": {
+    "node": ">=22"
+  },
+  "bugs": {
+    "url": "https://github.com/iamjisoofan/comic-creator/issues"
+  },
+  "homepage": "https://github.com/iamjisoofan/comic-creator#readme",
+  "private": true,
+  "dependencies": {
+    "zod": "^4.4.3"
+  },
+  "devDependencies": {
+    "@types/node": "^26.2.0",
+    "tsx": "^4.23.12",
+    "typescript": "^7.0.2",
+    "vitest": "^4.1.10"
+  }
+}

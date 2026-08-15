@@ -1,0 +1,518 @@
+{
+  "title": "Hello, Dog Man",
+  "tone": "funny",
+  "chapters": [
+    {
+      "number": 1,
+      "title": "Hello, Dog Man",
+      "pages": [
+        {
+          "number": 1,
+          "layout": "2x2",
+          "panels": [
+            {
+              "id": "ch1-p1-01",
+              "shot": "wide",
+              "description": "Dog Man stands outside on a sunny day and waves hello.",
+              "cast": [
+                "dog-man"
+              ],
+              "dialogue": [
+                {
+                  "speaker": "dog-man",
+                  "text": "HI! I AM DOG MAN!"
+                }
+              ]
+            },
+            {
+              "id": "ch1-p1-02",
+              "shot": "wide",
+              "description": "placeholder",
+              "cast": []
+            },
+            {
+              "id": "ch1-p1-03",
+              "shot": "wide",
+              "description": "placeholder",
+              "cast": []
+            },
+            {
+              "id": "ch1-p1-04",
+              "shot": "wide",
+              "description": "placeholder",
+              "cast": []
+            }
+          ]
+        },
+        {
+          "number": 2,
+          "layout": "2x2",
+          "panels": [
+            {
+              "id": "ch1-p2-01",
+              "shot": "wide",
+              "description": "placeholder",
+              "cast": []
+            },
+            {
+              "id": "ch1-p2-02",
+              "shot": "wide",
+              "description": "placeholder",
+              "cast": []
+            },
+            {
+              "id": "ch1-p2-03",
+              "shot": "wide",
+              "description": "placeholder",
+              "cast": []
+            },
+            {
+              "id": "ch1-p2-04",
+              "shot": "wide",
+              "description": "placeholder",
+              "cast": []
+            }
+          ]
+        },
+        {
+          "number": 3,
+          "layout": "2x2",
+          "panels": [
+            {
+              "id": "ch1-p3-01",
+              "shot": "wide",
+              "description": "placeholder",
+              "cast": []
+            },
+            {
+              "id": "ch1-p3-02",
+              "shot": "wide",
+              "description": "placeholder",
+              "cast": []
+            },
+            {
+              "id": "ch1-p3-03",
+              "shot": "wide",
+              "description": "placeholder",
+              "cast": []
+            },
+            {
+              "id": "ch1-p3-04",
+              "shot": "wide",
+              "description": "placeholder",
+              "cast": []
+            }
+          ]
+        },
+        {
+          "number": 4,
+          "layout": "2x2",
+          "panels": [
+            {
+              "id": "ch1-p4-01",
+              "shot": "wide",
+              "description": "placeholder",
+              "cast": []
+            },
+            {
+              "id": "ch1-p4-02",
+              "shot": "wide",
+              "description": "placeholder",
+              "cast": []
+            },
+            {
+              "id": "ch1-p4-03",
+              "shot": "wide",
+              "description": "placeholder",
+              "cast": []
+            },
+            {
+              "id": "ch1-p4-04",
+              "shot": "wide",
+              "description": "placeholder",
+              "cast": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "number": 2,
+      "title": "The Long Walk",
+      "pages": [
+        {
+          "number": 1,
+          "layout": "2x2",
+          "panels": [
+            {
+              "id": "ch2-p1-01",
+              "shot": "wide",
+              "description": "placeholder",
+              "cast": []
+            },
+            {
+              "id": "ch2-p1-02",
+              "shot": "wide",
+              "description": "placeholder",
+              "cast": []
+            },
+            {
+              "id": "ch2-p1-03",
+              "shot": "wide",
+              "description": "placeholder",
+              "cast": []
+            },
+            {
+              "id": "ch2-p1-04",
+              "shot": "wide",
+              "description": "placeholder",
+              "cast": []
+            }
+          ]
+        },
+        {
+          "number": 2,
+          "layout": "2x2",
+          "panels": [
+            {
+              "id": "ch2-p2-01",
+              "shot": "wide",
+              "description": "placeholder",
+              "cast": []
+            },
+            {
+              "id": "ch2-p2-02",
+              "shot": "wide",
+              "description": "placeholder",
+              "cast": []
+            },
+            {
+              "id": "ch2-p2-03",
+              "shot": "wide",
+              "description": "placeholder",
+              "cast": []
+            },
+            {
+              "id": "ch2-p2-04",
+              "shot": "wide",
+              "description": "placeholder",
+              "cast": []
+            }
+          ]
+        },
+        {
+          "number": 3,
+          "layout": "2x2",
+          "panels": [
+            {
+              "id": "ch2-p3-01",
+              "shot": "wide",
+              "description": "placeholder",
+              "cast": []
+            },
+            {
+              "id": "ch2-p3-02",
+              "shot": "wide",
+              "description": "placeholder",
+              "cast": []
+            },
+            {
+              "id": "ch2-p3-03",
+              "shot": "wide",
+              "description": "placeholder",
+              "cast": []
+            },
+            {
+              "id": "ch2-p3-04",
+              "shot": "wide",
+              "description": "placeholder",
+              "cast": []
+            }
+          ]
+        },
+        {
+          "number": 4,
+          "layout": "2x2",
+          "panels": [
+            {
+              "id": "ch2-p4-01",
+              "shot": "wide",
+              "description": "placeholder",
+              "cast": []
+            },
+            {
+              "id": "ch2-p4-02",
+              "shot": "wide",
+              "description": "placeholder",
+              "cast": []
+            },
+            {
+              "id": "ch2-p4-03",
+              "shot": "wide",
+              "description": "placeholder",
+              "cast": []
+            },
+            {
+              "id": "ch2-p4-04",
+              "shot": "wide",
+              "description": "placeholder",
+              "cast": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "number": 3,
+      "title": "A Small Problem",
+      "pages": [
+        {
+          "number": 1,
+          "layout": "2x2",
+          "panels": [
+            {
+              "id": "ch3-p1-01",
+              "shot": "wide",
+              "description": "placeholder",
+              "cast": []
+            },
+            {
+              "id": "ch3-p1-02",
+              "shot": "wide",
+              "description": "placeholder",
+              "cast": []
+            },
+            {
+              "id": "ch3-p1-03",
+              "shot": "wide",
+              "description": "placeholder",
+              "cast": []
+            },
+            {
+              "id": "ch3-p1-04",
+              "shot": "wide",
+              "description": "placeholder",
+              "cast": []
+            }
+          ]
+        },
+        {
+          "number": 2,
+          "layout": "2x2",
+          "panels": [
+            {
+              "id": "ch3-p2-01",
+              "shot": "wide",
+              "description": "placeholder",
+              "cast": []
+            },
+            {
+              "id": "ch3-p2-02",
+              "shot": "wide",
+              "description": "placeholder",
+              "cast": []
+            },
+            {
+              "id": "ch3-p2-03",
+              "shot": "wide",
+              "description": "placeholder",
+              "cast": []
+            },
+            {
+              "id": "ch3-p2-04",
+              "shot": "wide",
+              "description": "placeholder",
+              "cast": []
+            }
+          ]
+        },
+        {
+          "number": 3,
+          "layout": "2x2",
+          "panels": [
+            {
+              "id": "ch3-p3-01",
+              "shot": "wide",
+              "description": "placeholder",
+              "cast": []
+            },
+            {
+              "id": "ch3-p3-02",
+              "shot": "wide",
+              "description": "placeholder",
+              "cast": []
+            },
+            {
+              "id": "ch3-p3-03",
+              "shot": "wide",
+              "description": "placeholder",
+              "cast": []
+            },
+            {
+              "id": "ch3-p3-04",
+              "shot": "wide",
+              "description": "placeholder",
+              "cast": []
+            }
+          ]
+        },
+        {
+          "number": 4,
+          "layout": "2x2",
+          "panels": [
+            {
+              "id": "ch3-p4-01",
+              "shot": "wide",
+              "description": "placeholder",
+              "cast": []
+            },
+            {
+              "id": "ch3-p4-02",
+              "shot": "wide",
+              "description": "placeholder",
+              "cast": []
+            },
+            {
+              "id": "ch3-p4-03",
+              "shot": "wide",
+              "description": "placeholder",
+              "cast": []
+            },
+            {
+              "id": "ch3-p4-04",
+              "shot": "wide",
+              "description": "placeholder",
+              "cast": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "number": 4,
+      "title": "Home Again",
+      "pages": [
+        {
+          "number": 1,
+          "layout": "2x2",
+          "panels": [
+            {
+              "id": "ch4-p1-01",
+              "shot": "wide",
+              "description": "placeholder",
+              "cast": []
+            },
+            {
+              "id": "ch4-p1-02",
+              "shot": "wide",
+              "description": "placeholder",
+              "cast": []
+            },
+            {
+              "id": "ch4-p1-03",
+              "shot": "wide",
+              "description": "placeholder",
+              "cast": []
+            },
+            {
+              "id": "ch4-p1-04",
+              "shot": "wide",
+              "description": "placeholder",
+              "cast": []
+            }
+          ]
+        },
+        {
+          "number": 2,
+          "layout": "2x2",
+          "panels": [
+            {
+              "id": "ch4-p2-01",
+              "shot": "wide",
+              "description": "placeholder",
+              "cast": []
+            },
+            {
+              "id": "ch4-p2-02",
+              "shot": "wide",
+              "description": "placeholder",
+              "cast": []
+            },
+            {
+              "id": "ch4-p2-03",
+              "shot": "wide",
+              "description": "placeholder",
+              "cast": []
+            },
+            {
+              "id": "ch4-p2-04",
+              "shot": "wide",
+              "description": "placeholder",
+              "cast": []
+            }
+          ]
+        },
+        {
+          "number": 3,
+          "layout": "2x2",
+          "panels": [
+            {
+              "id": "ch4-p3-01",
+              "shot": "wide",
+              "description": "placeholder",
+              "cast": []
+            },
+            {
+              "id": "ch4-p3-02",
+              "shot": "wide",
+              "description": "placeholder",
+              "cast": []
+            },
+            {
+              "id": "ch4-p3-03",
+              "shot": "wide",
+              "description": "placeholder",
+              "cast": []
+            },
+            {
+              "id": "ch4-p3-04",
+              "shot": "wide",
+              "description": "placeholder",
+              "cast": []
+            }
+          ]
+        },
+        {
+          "number": 4,
+          "layout": "2x2",
+          "panels": [
+            {
+              "id": "ch4-p4-01",
+              "shot": "wide",
+              "description": "placeholder",
+              "cast": []
+            },
+            {
+              "id": "ch4-p4-02",
+              "shot": "wide",
+              "description": "placeholder",
+              "cast": []
+            },
+            {
+              "id": "ch4-p4-03",
+              "shot": "wide",
+              "description": "placeholder",
+              "cast": []
+            },
+            {
+              "id": "ch4-p4-04",
+              "shot": "wide",
+              "description": "placeholder",
+              "cast": []
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
