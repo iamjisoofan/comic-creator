@@ -58,10 +58,10 @@ export function renderPanelSvg(panel: Panel, characters: Map<string, Character>)
   ]);
 
   return (
-    // preserveAspectRatio：格子比 4:3 宽（通栏格）时画面居中留白，
-    // 而不是被拉伸或者把格子撑成两倍高
+    // 不写 preserveAspectRatio：格子本身就是 4:3（版式里所有格子全等，页面按版式设了
+    // aspect-ratio），画面正好满格铺开，默认值 xMidYMid meet 不会留出可见的白边
     `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${PANEL_WIDTH} ${PANEL_HEIGHT}" ` +
-    `preserveAspectRatio="xMidYMid meet" ${strokeAttrs}>` +
+    `${strokeAttrs}>` +
     body.join("") +
     `</svg>`
   );

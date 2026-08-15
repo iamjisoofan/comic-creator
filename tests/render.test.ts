@@ -77,9 +77,10 @@ describe("renderPanelSvg", () => {
     expect(() => renderPanelSvg(bad, characters)).toThrow(/ghost/);
   });
 
-  it("画面按 4:3 居中缩放放进格子，不被拉伸", () => {
+  it("不写 preserveAspectRatio —— 格子是 4:3，画面满格铺开，不该有留白设定", () => {
     const svg = renderPanelSvg(panel, characters);
-    expect(svg).toContain('preserveAspectRatio="xMidYMid meet"');
+    expect(svg).not.toContain("preserveAspectRatio");
+    expect(svg).toContain('viewBox="0 0 400 300"');
   });
 
   // 绊线（tripwire）：shape 词表里没有 text 类型，所以今天不可能失败。

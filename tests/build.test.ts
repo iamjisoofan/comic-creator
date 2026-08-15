@@ -129,35 +129,40 @@ describe("buildHtml", () => {
   });
 });
 
-describe("页面高度（F5）：所有版式共用同一行高", () => {
-  const layouts = ["2x2", "1-2-1", "1-2-2", "2-1-2", "2x3", "3x2"] as const;
-  const rowsOf: Record<string, number> = {
-    "2x2": 2, "1-2-1": 3, "1-2-2": 3, "2-1-2": 3, "2x3": 3, "3x2": 2,
-  };
+/** 只有一页、指定版式的书，用来单独看这一页生成的 CSS */
+const pageOf = (layout: "2x2" | "2x3" | "3x2", panels: object[]) => {
+  const p = { number: 1, layout, panels };
+  const s = ScriptSchema.parse({
+    title: "T", tone: "funny",
+    chapters: Array.from({ length: 4 }, () => ({ number: 1, title: "C", pages: [p, p, p, p] })),
+  });
+  return buildHtml({ ...book, script: s, panels: new Map() });
+};
 
-  it("每页显式声明等高的行，行高是全局变量", () => {
-    expect(buildHtml(book)).toContain("--row:");
-    for (const layout of layouts) {
-      const n = { "2x2": 4, "1-2-1": 4, "1-2-2": 5, "2-1-2": 5, "2x3": 6, "3x2": 6 }[layout];
-      const pages = [{
-        number: 1, layout,
-        panels: Array.from({ length: n }, (_, i) => scriptPanel(`p${i}`)),
-      }];
-      const s = ScriptSchema.parse({
-        title: "T", tone: "funny",
-        chapters: Array.from({ length: 4 }, () => ({
-          number: 1, title: "C", pages: [pages[0], pages[0], pages[0], pages[0]],
-        })),
-      });
-      const out = buildHtml({ ...book, script: s, panels: new Map() });
-      expect(out).toContain(`grid-template-rows: repeat(${rowsOf[layout]}, var(--row))`);
+describe("翻页：一页按版式定形，整页缩进一屏", () => {
+  // 要的不是"每页一样高"——固定 4:3 的格子加上不同的行列数，页高本来就不同。
+  // 要的是"按一次方向键正好翻过一整页"，靠 aspect-ratio + 宽度封顶实现。
+  const shapes = { "2x2": [2, 2, 4], "2x3": [2, 3, 6], "3x2": [3, 2, 6] } as const;
+
+  it("每页声明 列×4 : 行×3 的 aspect-ratio，并按它把宽度封顶", () => {
+    for (const [layout, [cols, rows, n]] of Object.entries(shapes)) {
+      const out = pageOf(layout as keyof typeof shapes,
+        Array.from({ length: n }, (_, i) => scriptPanel(`p${i}`)));
+      expect(out).toContain(`grid-template-columns: repeat(${cols}, 1fr)`);
+      expect(out).toContain(`grid-template-rows: repeat(${rows}, 1fr)`);
+      expect(out).toContain(`aspect-ratio: ${cols * 4} / ${rows * 3}`);
+      expect(out).toContain(`width: min(100%, calc(var(--page-fit) * ${cols * 4} / ${rows * 3}))`);
     }
   });
 
-  it("SVG 撑满格子而不是撑高格子（4:3 居中留白）", () => {
+  it("不再有固定行高 —— 那会把画面压成信箱条", () => {
     const html = buildHtml(book);
-    expect(html).toContain(".panel svg { display: block; width: 100%; height: 100%; }");
-    expect(html).toContain('preserveAspectRatio="xMidYMid meet"');
+    expect(html).not.toContain("--row");
+    expect(html).not.toContain("preserveAspectRatio");
+  });
+
+  it("画面撑满格子", () => {
+    expect(buildHtml(book)).toContain(".panel svg { display: block; width: 100%; height: 100%; }");
   });
 });
 

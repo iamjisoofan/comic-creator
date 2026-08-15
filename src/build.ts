@@ -20,17 +20,19 @@ function tilt(text: string): number {
 }
 
 const CSS = `
-/* --row：每一格的高度。所有版式共用同一个行高，所以一页就是一页：
-   3 行的版式约 710px，2 行的约 480px，都能整页塞进笔记本屏幕（1280×800 也够），翻页才有意义。
-   通栏格只是格子更宽，不会变成两倍高——画面按 4:3 居中放进格子里。 */
-:root { --gap: 12px; --row: 220px; }
+/* 每页按版式声明 aspect-ratio（列×4 : 行×3），宽度封顶在 --page-fit 换算出来的值，
+   于是浏览器自己把整页缩到一屏之内。不同版式的页高本来就不一样（2 行的矮、3 行的高），
+   这没关系——要的不是"每页一样高"，是"按一次方向键正好翻过一整页"。
+   --page-fit 是一页允许占的最大高度，留 8% 余量：1280×800 的笔记本上 92vh = 736px。
+   它同时决定 3 行版式的格子有多大（页高封顶 → 页宽跟着封顶），别随手调小。 */
+:root { --gap: 12px; --page-fit: 92vh; }
 * { box-sizing: border-box; }
 body { margin: 0; background: #333; font-family: "Comic Sans MS", "Chalkboard SE", sans-serif; }
 .book { max-width: 900px; margin: 0 auto; padding: 24px; }
 h1 { color: #fff; text-align: center; }
 h2 { color: #F5C518; margin: 32px 0 8px; }
 .page { display: grid; gap: var(--gap); background: #fff; padding: var(--gap);
-        border-radius: 8px; margin-bottom: 24px; }
+        border-radius: 8px; margin: 0 auto 24px; }
 .panel { position: relative; border: 6px solid #000; border-radius: 4px;
          overflow: hidden; background: #fff; }
 .panel svg { display: block; width: 100%; height: 100%; }
@@ -124,9 +126,15 @@ export function buildHtml(book: BookData): string {
         );
       });
 
+      // 一页的形状：列数 × 4 : 行数 × 3，因为每一格都是 4:3 且这些版式里格子全等。
+      // 宽度封顶让整页高度不超过 --page-fit，浏览器按比例把整页缩小，画面仍然满格。
+      const w = spec.columns * 4;
+      const h = spec.rows * 3;
       parts.push(
         `<div class="page" style="grid-template-columns: repeat(${spec.columns}, 1fr);` +
-        ` grid-template-rows: repeat(${spec.rows}, var(--row))">` +
+        ` grid-template-rows: repeat(${spec.rows}, 1fr);` +
+        ` aspect-ratio: ${w} / ${h};` +
+        ` width: min(100%, calc(var(--page-fit) * ${w} / ${h}))">` +
         cells.join("") +
         `</div>`,
       );
