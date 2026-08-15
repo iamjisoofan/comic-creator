@@ -1,5 +1,5 @@
 {
-  "id": "ch1-p1-01",
+  "id": "ch1-p1-02",
   "shapes": [
     {
       "t": "line",
@@ -7,13 +7,21 @@
       "y1": 280,
       "x2": 400,
       "y2": 280
+    },
+    {
+      "t": "ellipse",
+      "cx": 312,
+      "cy": 266,
+      "rx": 30,
+      "ry": 12,
+      "fill": "red"
     }
   ],
   "cast": [
     {
       "id": "dog-man",
-      "pose": "happy",
-      "x": 170,
+      "pose": "shocked",
+      "x": 50,
       "y": 85,
       "scale": 0.65
     }

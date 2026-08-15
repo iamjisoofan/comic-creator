@@ -1,0 +1,42 @@
+{
+  "id": "ch1-p1-03",
+  "shapes": [
+    {
+      "t": "line",
+      "x1": 0,
+      "y1": 280,
+      "x2": 400,
+      "y2": 280
+    },
+    {
+      "t": "circle",
+      "cx": 48,
+      "cy": 258,
+      "r": 10,
+      "fill": "black"
+    },
+    {
+      "t": "circle",
+      "cx": 88,
+      "cy": 270,
+      "r": 10,
+      "fill": "black"
+    },
+    {
+      "t": "circle",
+      "cx": 128,
+      "cy": 258,
+      "r": 10,
+      "fill": "black"
+    }
+  ],
+  "cast": [
+    {
+      "id": "dog-man",
+      "pose": "angry",
+      "x": 200,
+      "y": 85,
+      "scale": 0.65
+    }
+  ]
+}
