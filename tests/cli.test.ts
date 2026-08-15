@@ -56,7 +56,8 @@ describe("cli check", () => {
     const r = await cli("check", SAMPLE);
     expect(r.code).toBe(0);
     expect(r.stdout).toContain("角色 1 个");
-    expect(r.stdout).toMatch(/已作画 1\/64 格/);
+    // 只断言 M/N 的形状，不写死样例书画了几格 —— 那是会变的内容，不是行为
+    expect(r.stdout).toMatch(/已作画 \d+\/64 格/);
   });
 
   it("书不存在 → 退出码 1，并说清是哪个文件", async () => {
@@ -85,7 +86,8 @@ describe("cli build", () => {
     await cp(SAMPLE, book, { recursive: true });
     const r = await cli("build", book);
     expect(r.code).toBe(0);
-    expect(r.stdout).toMatch(/已作画 1\/64 格/);
+    // 只断言 M/N 的形状，不写死样例书画了几格 —— 那是会变的内容，不是行为
+    expect(r.stdout).toMatch(/已作画 \d+\/64 格/);
     const html = await readFile(join(book, "index.html"), "utf8");
     expect(html).toContain("<svg");
     expect(html).toContain("Hello, Dog Man");

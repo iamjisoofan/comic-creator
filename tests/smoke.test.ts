@@ -23,7 +23,12 @@ describe("真实示例数据（comics/books/00-hello + comics/characters）", ()
     const html = buildHtml(book);
     expect(html.startsWith("<!DOCTYPE html>")).toBe(true);
     expect(html).toContain("<svg");
-    expect(html).toContain("HI! I AM DOG MAN!");
+    // 取剧本里第一句真实台词，验证文字层确实渲染进去了 —— 不写死具体内容
+    const firstLine = book.script.chapters
+      .flatMap((ch) => ch.pages)
+      .flatMap((pg) => pg.panels)
+      .flatMap((p) => p.dialogue)[0]!.text;
+    expect(html).toContain(firstLine);
     expect(html).toContain("not drawn yet"); // 增量作画：其余格还是占位
   });
 
