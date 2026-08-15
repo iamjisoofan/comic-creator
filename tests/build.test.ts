@@ -3,7 +3,7 @@ import { buildHtml, bubbleSide } from "../src/build.js";
 import { CharacterSchema, PanelSchema, ScriptSchema, type BookData } from "../src/schema.js";
 
 const dogMan = CharacterSchema.parse({
-  id: "dog-man", name: "Dog Man", viewBox: [0, 0, 100, 150],
+  id: "dog-man", name: "Dog Man", viewBox: [0, 0, 200, 300],
   poses: {
     idle: [{ t: "circle", cx: 50, cy: 35, r: 28, fill: "beige" }],
     happy: [], shocked: [], angry: [],
@@ -217,9 +217,15 @@ describe("bubbleSide（F4）：气泡贴在说话人那一侧", () => {
   });
 
   it("按角色中心判断，考虑 scale", () => {
-    // x=160、scale=2 → 中心 160+100=260，在右半边
+    // 角色 viewBox 宽 200，中心 = x + 200*scale/2
+    // x=160、scale=2 → 中心 360，在右半边
     expect(bubbleSide("dog-man", 0, panelWith(160, 2), characters)).toBe("right");
-    expect(bubbleSide("dog-man", 0, panelWith(160, 0.5), characters)).toBe("left");
+    // 同一个 x、缩小一半 → 中心 210，仍在右半边（证明 scale 真的进了计算）
+    expect(bubbleSide("dog-man", 0, panelWith(160, 0.5), characters)).toBe("right");
+    // x=60、scale=0.5 → 中心 110，在左半边
+    expect(bubbleSide("dog-man", 0, panelWith(60, 0.5), characters)).toBe("left");
+    // 同一个 x、放大四倍 → 中心 460，翻到右半边
+    expect(bubbleSide("dog-man", 0, panelWith(60, 4), characters)).toBe("right");
   });
 
   it("说话人不在这一格里 → 左右交替，两个气泡不会叠在一起", () => {

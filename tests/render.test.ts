@@ -5,7 +5,7 @@ import { CharacterSchema, PanelSchema } from "../src/schema.js";
 const dogMan = CharacterSchema.parse({
   id: "dog-man",
   name: "Dog Man",
-  viewBox: [0, 0, 100, 150],
+  viewBox: [0, 0, 200, 300],
   poses: {
     idle: [{ t: "circle", cx: 50, cy: 35, r: 28, fill: "beige" }],
     happy: [{ t: "circle", cx: 50, cy: 35, r: 28, fill: "beige" }],

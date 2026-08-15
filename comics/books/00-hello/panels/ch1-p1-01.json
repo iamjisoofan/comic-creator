@@ -1,8 +1,28 @@
 {
   "id": "ch1-p1-01",
   "shapes": [
-    { "t": "line", "x1": 0, "y1": 250, "x2": 400, "y2": 250 },
-    { "t": "circle", "cx": 350, "cy": 52, "r": 30, "fill": "yellow" }
+    {
+      "t": "line",
+      "x1": 0,
+      "y1": 250,
+      "x2": 400,
+      "y2": 250
+    },
+    {
+      "t": "circle",
+      "cx": 350,
+      "cy": 52,
+      "r": 30,
+      "fill": "yellow"
+    }
   ],
-  "cast": [{ "id": "dog-man", "pose": "idle", "x": 130, "y": 43, "scale": 1.4 }]
+  "cast": [
+    {
+      "id": "dog-man",
+      "pose": "idle",
+      "x": 145,
+      "y": 85,
+      "scale": 0.55
+    }
+  ]
 }

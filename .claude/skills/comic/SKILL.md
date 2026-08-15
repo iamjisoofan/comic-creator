@@ -49,7 +49,7 @@ description: 儿童漫画创作系统。当用户要开新漫画、造角色、�
 ## /comic character —— 造新角色
 
 1. 追问：叫什么名字？好人还是坏人？有什么特别的？
-2. 写 `comics/characters/<id>.md`（性格、口头禅、关系、标志物）和 `comics/characters/<id>.json`（`viewBox` 固定 `[0, 0, 100, 150]`，四个姿势 `idle`/`happy`/`shocked`/`angry`）
+2. 写 `comics/characters/<id>.md`（性格、口头禅、关系、标志物）和 `comics/characters/<id>.json`（`viewBox` 固定 `[0, 0, 200, 300]`，摆进分格时用 `scale` 约 0.5–0.6，四个姿势 `idle`/`happy`/`shocked`/`angry`）
 3. **先只画 `idle` 一个姿势。** 通过 `check` 只说明它合乎 schema，**不说明画得对不对**——这一步必须亲眼看图：
    - 写一个用完即删的小脚本（放 scratchpad，不进仓库），调用 `src/render.ts` 的 `renderPanelSvg`，把这个 `idle` 姿势渲成一个独立 `.svg` 文件。
      `renderPanelSvg(panel, characters)` 吃的是**一整格**，不是单个姿势，所以要**把姿势包进一个用完即扔的 panel**：
@@ -66,7 +66,7 @@ description: 儿童漫画创作系统。当用户要开新漫画、造角色、�
    - 自己确认没问题后，再把结果讲给孩子听，问他「像你想的吗？」
 4. 像 → 补齐 `happy` / `shocked` / `angry`（同样各看一遍图）；不像 → 改了重来
 
-每个姿势 ≤12 个图形。靠**颜色 + 一两个标志物**区分角色，不靠脸型细节。**任何填色图形半径要 ≥8**（矩形最短边 ≥16）——描边宽 6，往内吃掉一半，画小了会直接被吃没，参考 `comic.md` 第 2 节。
+每个姿势 ≤16 个图形。靠**颜色 + 一两个标志物**区分角色，不靠脸型细节。**任何填色图形半径要 ≥8**（矩形最短边 ≥16）——描边宽 6，往内吃掉一半，画小了会直接被吃没，参考 `comic.md` 第 2 节。
 
 ## /comic draw [章号] —— 画一章
 

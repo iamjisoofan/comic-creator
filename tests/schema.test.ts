@@ -32,7 +32,7 @@ describe("CharacterSchema", () => {
   const baseChar = {
     id: "dog-man",
     name: "Dog Man",
-    viewBox: [0, 0, 100, 150],
+    viewBox: [0, 0, 200, 300],
     poses: { idle: [circle], happy: [circle], shocked: [circle], angry: [circle] },
   };
 
@@ -46,8 +46,8 @@ describe("CharacterSchema", () => {
     expect(r.success).toBe(false);
   });
 
-  it("单个姿势超过 12 个图形被拒绝，并指出是哪个姿势", () => {
-    const tooMany = Array.from({ length: 13 }, () => circle);
+  it("单个姿势超过 16 个图形被拒绝，并指出是哪个姿势", () => {
+    const tooMany = Array.from({ length: 17 }, () => circle);
     const r = CharacterSchema.safeParse({
       ...baseChar,
       poses: { ...baseChar.poses, shocked: tooMany },

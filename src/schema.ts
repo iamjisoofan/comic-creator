@@ -20,7 +20,7 @@ export type Shape = z.infer<typeof ShapeSchema>;
 export const PoseSchema = z.enum(["idle", "happy", "shocked", "angry"]);
 export type Pose = z.infer<typeof PoseSchema>;
 
-const poseShapes = z.array(ShapeSchema).max(12, "一个姿势最多 12 个图形");
+const poseShapes = z.array(ShapeSchema).max(16, "一个姿势最多 16 个图形");
 
 export const CharacterSchema = z.object({
   id: z.string().min(1),

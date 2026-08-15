@@ -32,7 +32,7 @@ describe("真实示例数据（comics/books/00-hello + comics/characters）", ()
     const dogMan = book.characters.get("dog-man")!;
     for (const pose of ["idle", "happy", "shocked", "angry"] as const) {
       expect(dogMan.poses[pose].length).toBeGreaterThan(0);
-      expect(dogMan.poses[pose].length).toBeLessThanOrEqual(12);
+      expect(dogMan.poses[pose].length).toBeLessThanOrEqual(16);
     }
   });
 });

@@ -9,7 +9,7 @@ let bookDir: string;
 let charsDir: string;
 
 const character = {
-  id: "dog-man", name: "Dog Man", viewBox: [0, 0, 100, 150],
+  id: "dog-man", name: "Dog Man", viewBox: [0, 0, 200, 300],
   poses: {
     idle: [{ t: "circle", cx: 50, cy: 35, r: 28, fill: "beige" }],
     happy: [], shocked: [], angry: [],
