@@ -166,6 +166,42 @@ describe("翻页：一页按版式定形，整页缩进一屏", () => {
   });
 });
 
+describe("拟声词和气泡不抢同一个角落", () => {
+  const withSfx = (extra: object) => pageOf("2x2", [
+    scriptPanel("a", { sfx: "BONK!", ...extra }),
+    scriptPanel("b"), scriptPanel("c"), scriptPanel("d"),
+  ]);
+
+  it("有拟声词的格子带 sfxed 类", () => {
+    expect(withSfx({})).toContain('class="panel sfxed"');
+  });
+
+  it("旁白 + 拟声词的格子两个类都带", () => {
+    expect(withSfx({ caption: "LATER..." })).toContain('class="panel captioned sfxed"');
+  });
+
+  it("没有拟声词就不带 sfxed", () => {
+    const out = pageOf("2x2", ["a", "b", "c", "d"].map((id) => scriptPanel(id)));
+    expect(out).not.toContain("sfxed\"");
+  });
+
+  it("sfxed 把上沿气泡压到拟声词下面，左右都压", () => {
+    const html = buildHtml(book);
+    // 拟声词在右上角，上沿气泡必须整体让开——只让右边不够，
+    // 窄格子里 60% 宽的左气泡照样伸到拟声词底下
+    expect(html).toContain(".sfx { position: absolute; top: 8px; right: 8px;");
+    expect(html).toMatch(/\.sfxed \.bubble\.top \{ top: (\d+)px; \}/);
+    const shift = Number(html.match(/\.sfxed \.bubble\.top \{ top: (\d+)px; \}/)![1]);
+    // 拟声词 30px 字号 + ±15° 倾斜，实测外接框底边离上沿约 62px
+    expect(shift).toBeGreaterThanOrEqual(62);
+  });
+
+  it("sfxed 规则写在 captioned 之后 —— 两者特异性相同，靠顺序取大的那个", () => {
+    const html = buildHtml(book);
+    expect(html.indexOf(".sfxed .bubble.top")).toBeGreaterThan(html.indexOf(".captioned .bubble.top"));
+  });
+});
+
 describe("bubbleSide（F4）：气泡贴在说话人那一侧", () => {
   const characters = new Map([["dog-man", dogMan]]);
   const panelWith = (x: number, scale = 1) => PanelSchema.parse({
@@ -238,7 +274,8 @@ describe("bubbleSide（F4）：气泡贴在说话人那一侧", () => {
 
   it("有旁白时这一格带 captioned 类，气泡让开旁白的位置", () => {
     const html = buildHtml(book);
-    expect(html).toContain('class="panel captioned"');
+    // 这一格同时有旁白和拟声词，所以两个类都在
+    expect(html).toContain('class="panel captioned sfxed"');
     expect(html).toContain(".captioned .bubble.top { top: 44px; }");
   });
 });

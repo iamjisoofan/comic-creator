@@ -47,12 +47,18 @@ h2 { color: #F5C518; margin: 32px 0 8px; }
 .bubble.top { top: 8px; }
 .bubble.bottom { bottom: 8px; }
 .captioned .bubble.top { top: 44px; }
+/* 拟声词固定在右上角，会和贴上沿的气泡抢同一块地方（说话人在右半边时正好压在一起）。
+   有拟声词的格子带 .sfxed，上沿气泡整体下移让开：拟声词 30px 且带 ±15° 倾斜，实测最长的
+   WHOOSH! 外接框底边离格子上沿 62px，64px 刚好让开。左右两侧都要让——窄格子里 60% 宽的
+   左气泡照样会伸到拟声词底下。
+   这条和上一条特异性相同，靠书写顺序让 .sfxed 赢，所以既有旁白又有拟声词时取大的那个。 */
+.sfxed .bubble.top { top: 64px; }
 .bubble::after { content: ""; position: absolute; border: 7px solid transparent; }
 .bubble.top::after { bottom: -14px; border-top-color: #000; }
 .bubble.bottom::after { top: -14px; border-bottom-color: #000; }
 .bubble.left::after { left: 18px; }
 .bubble.right::after { right: 18px; }
-.sfx { position: absolute; top: 10px; right: 10px; font-size: 30px; font-weight: 900;
+.sfx { position: absolute; top: 8px; right: 8px; font-size: 30px; font-weight: 900;
        color: #F5C518; -webkit-text-stroke: 3px #000; }
 .caption { position: absolute; top: 8px; left: 8px; background: #fff;
            border: 4px solid #000; padding: 4px 8px; font-size: 13px; font-weight: bold; }
@@ -120,9 +126,11 @@ export function buildHtml(book: BookData): string {
           );
         }
 
-        const cls = sp.caption ? "panel captioned" : "panel";
+        const cls = ["panel"];
+        if (sp.caption) cls.push("captioned");
+        if (sp.sfx) cls.push("sfxed");
         cells.push(
-          `<div class="${cls}" style="grid-area: ${area}">${art}${overlay.join("")}</div>`,
+          `<div class="${cls.join(" ")}" style="grid-area: ${area}">${art}${overlay.join("")}</div>`,
         );
       });
 
