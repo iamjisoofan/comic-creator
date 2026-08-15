@@ -13,34 +13,61 @@
             {
               "id": "ch1-p1-01",
               "shot": "wide",
-              "description": "Dog Man stands outside on a sunny day and waves hello.",
+              "description": "Dog Man outside on a sunny morning, happy.",
               "cast": [
                 "dog-man"
               ],
+              "caption": "ONE MORNING...",
               "dialogue": [
                 {
                   "speaker": "dog-man",
-                  "text": "HI! I AM DOG MAN!"
+                  "text": "TIME FOR MY BIG BONE!"
                 }
               ]
             },
             {
               "id": "ch1-p1-02",
               "shot": "wide",
-              "description": "placeholder",
-              "cast": []
+              "description": "Dog Man stares at the empty bowl. The bone is gone.",
+              "cast": [
+                "dog-man"
+              ],
+              "sfx": "GASP!",
+              "dialogue": [
+                {
+                  "speaker": "dog-man",
+                  "text": "MY BONE! IT IS GONE!"
+                }
+              ]
             },
             {
               "id": "ch1-p1-03",
               "shot": "wide",
-              "description": "placeholder",
-              "cast": []
+              "description": "Dog Man finds muddy paw prints on the ground.",
+              "cast": [
+                "dog-man"
+              ],
+              "dialogue": [
+                {
+                  "speaker": "dog-man",
+                  "text": "PAW PRINTS! WHO TOOK IT?"
+                }
+              ]
             },
             {
               "id": "ch1-p1-04",
               "shot": "wide",
-              "description": "placeholder",
-              "cast": []
+              "description": "Dog Man dashes off, speed lines behind him.",
+              "cast": [
+                "dog-man"
+              ],
+              "sfx": "WHOOSH!",
+              "dialogue": [
+                {
+                  "speaker": "dog-man",
+                  "text": "I AM ON IT!"
+                }
+              ]
             }
           ]
         },
