@@ -22,7 +22,7 @@ npx tsx src/cli.ts build <book-dir>    # 重建 <book-dir>/index.html
 ```
 src/
   palette.ts   调色板、描边常量、画布尺寸（400×300）
-  layout.ts    6 种版式 → CSS Grid（columns / rows / areas）
+  layout.ts    3 种版式 → CSS Grid（columns / rows / areas），只有格子全等的版式
   schema.ts    Zod 定义：shape / character / panel / script，外加 BookData 接口
   render.ts    renderPanelSvg()：panel JSON + 角色库 → SVG 字符串
   load.ts      loadBook()：读盘 + 校验 + 跨文件核对
@@ -62,10 +62,24 @@ bubbleSide(speaker, index, drawn, characters): "left" | "right"
 
 ## 页面排版（改 CSS 前先读）
 
-- 每页是一个 CSS Grid：列数来自版式，**行高是固定的 `--row: 220px`，所有版式共用**。
-- 画面 SVG `width:100% height:100%` + `preserveAspectRatio="xMidYMid meet"`：格子比 4:3 宽（通栏格）时画面居中留白，**不会把格子撑成两倍高**。
-- 实测（Chrome headless，900px 书宽）：2 行的版式（`2x2`/`3x2`）页高 476px，3 行的（`1-2-1`/`1-2-2`/`2-1-2`/`2x3`）708px，都能整页塞进笔记本视口。改 `--row` 前请重新量：3 行页高 ≈ `3 × row + 48`。
-- 气泡：第一条贴上沿、第二条贴下沿（schema 限死最多 2 条）；左右由 `speaker` 在画面里的横向位置决定，尾巴同侧。有旁白的格子带 `captioned` 类，上沿气泡下移让开旁白。
+- 每页是一个 CSS Grid，列和行都是 `1fr`，加上两条写在行内样式里的关键属性：
+  `aspect-ratio: 列×4 / 行×3` 和 `width: min(100%, calc(var(--page-fit) * 列×4 / 行×3))`。
+  前者让页面按版式定形（格子全等 + 每格 4:3，比例才这么算），后者把页高封顶在
+  `--page-fit`（`:root` 里 = 92vh），于是浏览器自己把整页等比缩进一屏。
+- **页高本来就不等，别去追等高。** 目标是"按一次方向键正好翻过一整页"，不是像素等高；
+  等高 + 满格 + 不同行列数三者不可能同时成立，理由见 `project.md`。
+- 画面 SVG `width:100% height:100%`，**不写 `preserveAspectRatio`**：格子已经是 4:3，
+  默认的 `meet` 不会留出可见白边。写死 `--row` 行高 + `meet` 是上一版的做法，
+  会让每一格都变成信箱条（实测留白 30%/66%），别改回去。
+- 实测（Chrome headless 1280×800，900px 书宽）：`2x2` 852×639、`2x3` 654×736、
+  `3x2` 852×426，都不超视口；格子分别是 408×301 / 309×229 / 268×195，残留留白 1.9%–4.7%。
+  改 `--page-fit`、`--gap` 或书宽之后**要重新量**（浏览器实测，别推）。
+- 气泡：第一条贴上沿、第二条贴下沿（schema 限死最多 2 条）；左右由 `speaker` 在画面里的横向位置决定，尾巴同侧。
+- **上沿是三样东西抢地方：旁白（左上）、拟声词（右上）、上沿气泡。**
+  有旁白的格子带 `captioned`，有拟声词的带 `sfxed`，上沿气泡分别下移 44px / 64px 让开。
+  两条规则特异性相同（都是 3 个类），靠**书写顺序**让 `.sfxed` 赢，两样都有时取大的那个——
+  调整时别把 `.sfxed` 那行挪到 `.captioned` 前面。64px 是量出来的：拟声词 30px 字号
+  加 ±15° 倾斜，最长的 `WHOOSH!` 外接框底边离格子上沿 62px。
 
 ## 易踩的坑
 
@@ -74,5 +88,5 @@ bubbleSide(speaker, index, drawn, characters): "left" | "right"
 - **成品里的文字必须是英文**（占位符也算），成品是要发给爷爷奶奶的。
 - **`check` 全绿不等于画得对。** 造完角色一定要渲图看：`qlmanage -t -s 800 -o <outdir> <file.svg>` 转 PNG 再用 Read 工具看。垂耳画得跟头等高会变成一副耳罩，`angry` 的填色三角形会胀成脸上一个叉——这两个都是测试全过、人一看就发现的问题。
 - **改 `comic.md` 时注意别说谎**：只有 schema 真拦得住的规则才能写"超了会拒绝"。管不住的（背景元素个数、细节层、透视、光影）归第 3 节。
-- 一页的格数必须与 `layout` 匹配（`2x2`=4、`1-2-2`=5、`2x3`=6……），`ScriptPageSchema` 的 `superRefine` 会查。
+- 一页的格数必须与 `layout` 匹配（`2x2`=4、`2x3`=6、`3x2`=6），`ScriptPageSchema` 的 `superRefine` 会查。**只有这三种版式**，`LayoutSchema` 从 `LAYOUT_SPECS` 的键推导，加减版式只改 `layout.ts` 一处。
 - `tsx` 不做类型检查。提交前 `npm test` **和** `npm run typecheck` 都要绿。
