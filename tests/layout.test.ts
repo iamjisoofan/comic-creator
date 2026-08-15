@@ -4,11 +4,22 @@ import { LAYOUT_SPECS, panelCount, type LayoutName } from "../src/layout.js";
 describe("layout", () => {
   it("每种版式的格数正确", () => {
     expect(panelCount("2x2")).toBe(4);
-    expect(panelCount("1-2-1")).toBe(4);
-    expect(panelCount("1-2-2")).toBe(5);
-    expect(panelCount("2-1-2")).toBe(5);
     expect(panelCount("2x3")).toBe(6);
     expect(panelCount("3x2")).toBe(6);
+  });
+
+  // 通栏格已被删除（见 layout.ts 的注释）：一格是固定 4:3，通栏格宽一倍就得高一倍
+  // 或者留白，两头都不能要。这条守着"别再把通栏版式加回来"。
+  it("只有格子全等的版式：每格正好占一行一列", () => {
+    for (const name of Object.keys(LAYOUT_SPECS) as LayoutName[]) {
+      const { columns, rows, areas } = LAYOUT_SPECS[name];
+      expect(areas.length, `${name}`).toBe(columns * rows);
+      for (const area of areas) {
+        const [r1, c1, r2, c2] = area.split("/").map((n) => Number(n.trim()));
+        expect(r2! - r1!, `${name} 的 "${area}" 跨了多行`).toBe(1);
+        expect(c2! - c1!, `${name} 的 "${area}" 跨了多列（通栏格）`).toBe(1);
+      }
+    }
   });
 
   // 原来这里断言 areas.length === panelCount()，而 panelCount() 就是 areas.length —— 恒真。
@@ -33,16 +44,6 @@ describe("layout", () => {
       expect(covered.size, `${name} 有空格子`).toBe(columns * rows);
       expect(areas.length).toBe(panelCount(name));
     }
-  });
-
-  it("1-2-1 的第一格通栏，第二三格各占一列", () => {
-    const spec = LAYOUT_SPECS["1-2-1"];
-    expect(spec.columns).toBe(2);
-    expect(spec.rows).toBe(3);
-    expect(spec.areas[0]).toBe("1 / 1 / 2 / 3");
-    expect(spec.areas[1]).toBe("2 / 1 / 3 / 2");
-    expect(spec.areas[2]).toBe("2 / 2 / 3 / 3");
-    expect(spec.areas[3]).toBe("3 / 1 / 4 / 3");
   });
 
   it("3x2 是两行三列", () => {
